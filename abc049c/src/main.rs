@@ -16,8 +16,12 @@ fn main() {
                 continue;
             }
 
-            let tail = s.get((s.len() - length)..s.len()).unwrap();
-            let head = s.get(0..(s.len() - length)).unwrap();
+            // not supported
+            // let tail = s.get((s.len() - length)..s.len()).unwrap();
+            // let head = s.get(0..(s.len() - length)).unwrap();
+
+            let tail = &s[(s.len() - length)..s.len()];
+            let head = &s[0..(s.len() - length)];
             if tail == words[i] {
                 org_s = String::from(head);
                 break;
@@ -34,8 +38,6 @@ fn main() {
 
         before_length = org_s.len();
     }
-
-    println!("YES");
 }
 
 fn read_line_str() -> String {
