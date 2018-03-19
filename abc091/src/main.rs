@@ -1,71 +1,57 @@
-#[derive(Clone, Debug)]
-struct Point {
-    x: i32,
-    y: i32,
-    t: String
-}
+use std::collections::HashMap;
 
 fn main() {
     let n = read();
-    let mut vec = Vec::new();
-
+    let mut blue_s = Vec::new();
     for _ in 0..n {
-        let v = read_line();
-        vec.push( Point{x: v[0], y: v[1], t: "red".to_string()} )
-    }
-    for _ in 0..n {
-        let v = read_line();
-        vec.push( Point{x: v[0], y: v[1], t: "blue".to_string()} )
+        blue_s.push(read_line_str());
     }
 
-    // Rule
-    // red.x < blue.x
-    // and
-    // red.y < blue.y
-    vec.sort_by(|a, b| a.x.cmp(&b.x));
+    let m = read();
+    let mut red_t = Vec::new();
+    for _ in 0..m {
+        red_t.push(read_line_str());
+    }
 
-    let mut cnt = 0;
-    loop {
-        for i in 0..vec.len() as usize {
-            // let mut red;
-            if vec[i].t == "blue" {
-                let mut max_red_y = -1;
-                let mut max_red_idx : usize = std::usize::MAX;
-                for j in 0..i {
-                    if vec[j].t == "red" {
-                        if vec[i].x > vec[j].x && vec[i].y > vec[j].y {
-                            if max_red_y < vec[j].y {
-                                max_red_y = vec[j].y;
-                                max_red_idx = j;
-                            }
-                        }
-                    }
-                }
-                if max_red_idx == std::usize::MAX {
-                    // 条件を満たす赤点はなかった。青だけ消す
-                    vec.remove(i);
-                    break;
-                } else {
-                    vec.remove(max_red_idx);
-                    vec.remove(i - 1);
-                    cnt += 1;
-                    break;
-                }
+    let mut hmap = HashMap::new();
+    for e in &blue_s {
+        if hmap.contains_key(e) {
+            // **このパタンもあり**
+            // if let Some(x) = hmap.get_mut(e) {
+            //     *x = *x + 1;
+            // }
+
+            // **これもいける**
+            // let x = hmap.get_mut(e).unwrap();
+            // *x += 1;
+
+            // **これもいけるのか**
+            *(hmap.get_mut(e).unwrap()) += 1;
+        } else {
+            hmap.insert(e, 1);
+        }
+    }
+
+    for e in &red_t {
+        if hmap.contains_key(e) {
+            if let Some(x) = hmap.get_mut(e) {
+                *x = *x - 1;
             }
-        }
-        let mut exist_blue = false;
-        for i in 0..vec.len() {
-            if vec[i].t == "blue" {
-                exist_blue = true;
-                break;
-            }
-        }
-        if !exist_blue {
-            break;
+        } else {
+            hmap.insert(e, -1);
         }
     }
 
-    println!("{}", cnt);
+    // &i32などは、*をつけるとその値になる
+    let mut price = 0;
+    for val in hmap.values() {
+        if price < *val {
+            price = *val;
+        }
+        // println!("{} {}", key, val);
+    }
+
+    println!("{}", price);
 }
 
 fn read() -> i32 {
@@ -74,12 +60,8 @@ fn read() -> i32 {
     s.trim().parse().ok().unwrap()
 }
 
-fn read_line() -> Vec<i32> {
+fn read_line_str() -> String {
     let mut s = String::new();
     std::io::stdin().read_line(&mut s).ok();
-    let v = s.trim()
-        .split_whitespace()
-        .map(|e| e.parse().ok().unwrap())
-        .collect();
-    return v
+    return s.replace("\n", "");
 }
