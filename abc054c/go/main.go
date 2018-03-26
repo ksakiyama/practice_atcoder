@@ -9,6 +9,8 @@ import (
 
 var sc = bufio.NewScanner(os.Stdin)
 
+const nmax = 8
+
 func nextInt() int {
 	sc.Scan()
 	i, e := strconv.Atoi(sc.Text())
@@ -24,18 +26,48 @@ func main() {
 	n := nextInt()
 	m := nextInt()
 
-	fmt.Println(n)
-	fmt.Println(m)
-
-	a := make([]int, 0)
-	b := make([]int, 0)
+	var graph = [nmax][nmax]bool{}
 
 	for i := 0; i < m; i++ {
-		// sc.Split(bufio.ScanWords)
-		a = append(a, nextInt())
-		b = append(b, nextInt())
+		a := nextInt()
+		b := nextInt()
+		graph[a-1][b-1] = true
+		graph[b-1][a-1] = true
 	}
 
-	fmt.Println(a)
-	fmt.Println(b)
+	var visited = [nmax]bool{}
+	visited[0] = true
+
+	ans := dfs(0, n, visited, graph)
+	fmt.Println(ans)
+}
+
+func dfs(v, N int, visited [nmax]bool, graph [nmax][nmax]bool) int {
+	allVisited := true
+	for i := 0; i < N; i++ {
+		if visited[i] == false {
+			allVisited = true
+		}
+	}
+
+	if allVisited {
+		return 1
+	}
+
+	ret := 0
+
+	for i := 0; i < N; i++ {
+		if !graph[v][i] {
+			continue
+		}
+		if visited[i] {
+			continue
+		}
+
+		visited[i] = true
+		ret += dfs(i, N, visited, graph)
+		visited[i] = false
+	}
+
+	return ret
 }
