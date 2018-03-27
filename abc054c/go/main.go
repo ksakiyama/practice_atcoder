@@ -38,14 +38,14 @@ func main() {
 	var visited = [nmax]bool{}
 	visited[0] = true
 
-	ans := dfs(0, n, visited)
+	ans := dfs(0, n, visited[:])
 	fmt.Println(ans)
 }
 
-func dfs(v, N int, visited [nmax]bool) int {
+func dfs(v, N int, visited []bool) int {
 	allVisited := true
 	for i := 0; i < N; i++ {
-		if visited[i] == false {
+		if !visited[i] {
 			allVisited = false
 		}
 	}
@@ -58,14 +58,20 @@ func dfs(v, N int, visited [nmax]bool) int {
 
 	for i := 0; i < N; i++ {
 		if !graph[v][i] {
+			// 頂点がつながってないので無視
 			continue
 		}
 		if visited[i] {
+			// すでに訪れたので無視（今回の問題は一筆書き）
 			continue
 		}
 
+		// 上記のチェックに引っかからなかった
+		// 到達可能なためtrue
 		visited[i] = true
+		// さらに深いポイントを探索していく
 		ret += dfs(i, N, visited)
+		// このルートは探索が終わったのでfalseに戻す
 		visited[i] = false
 	}
 
