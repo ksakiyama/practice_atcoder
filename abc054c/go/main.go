@@ -11,6 +11,8 @@ var sc = bufio.NewScanner(os.Stdin)
 
 const nmax = 8
 
+var graph = [nmax][nmax]bool{}
+
 func nextInt() int {
 	sc.Scan()
 	i, e := strconv.Atoi(sc.Text())
@@ -26,8 +28,6 @@ func main() {
 	n := nextInt()
 	m := nextInt()
 
-	var graph = [nmax][nmax]bool{}
-
 	for i := 0; i < m; i++ {
 		a := nextInt()
 		b := nextInt()
@@ -38,15 +38,15 @@ func main() {
 	var visited = [nmax]bool{}
 	visited[0] = true
 
-	ans := dfs(0, n, visited, graph)
+	ans := dfs(0, n, visited)
 	fmt.Println(ans)
 }
 
-func dfs(v, N int, visited [nmax]bool, graph [nmax][nmax]bool) int {
+func dfs(v, N int, visited [nmax]bool) int {
 	allVisited := true
 	for i := 0; i < N; i++ {
 		if visited[i] == false {
-			allVisited = true
+			allVisited = false
 		}
 	}
 
@@ -65,7 +65,7 @@ func dfs(v, N int, visited [nmax]bool, graph [nmax][nmax]bool) int {
 		}
 
 		visited[i] = true
-		ret += dfs(i, N, visited, graph)
+		ret += dfs(i, N, visited)
 		visited[i] = false
 	}
 
