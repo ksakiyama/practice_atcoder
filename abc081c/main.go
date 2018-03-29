@@ -4,10 +4,11 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"sort"
 	"strconv"
 )
 
-const INF int = 1000000
+// const INF int = 1000000
 
 var sc = bufio.NewScanner(os.Stdin)
 
@@ -49,27 +50,39 @@ func main() {
 		return
 	}
 
-	ans := 0
 	numReduce := l - k
 
 	// kより多い場合、少ないものから消していく
-	for {
-		var minKey int
-		minVal := INF
-		for key, val := range dict {
-			if min(minVal, val) == val {
-				minKey = key
-				minVal = val
-			}
-		}
+	// ソートする
+	vals := values(dict)
+	sort.Ints(vals)
 
-		ans += minVal
-		delete(dict, minKey)
+	idx := 0
+	ans := 0
+	for numReduce > 0 {
+		ans += vals[idx]
+		idx++
 		numReduce--
-		if numReduce == 0 {
-			break
-		}
 	}
+
+	// ソートしないで毎回探しているとすごく遅い
+	// for {
+	// 	var minKey int
+	// 	minVal := INF
+	// 	for key, val := range dict {
+	// 		if min(minVal, val) == val {
+	// 			minKey = key
+	// 			minVal = val
+	// 		}
+	// 	}
+
+	// 	ans += minVal
+	// 	delete(dict, minKey)
+	// 	numReduce--
+	// 	if numReduce == 0 {
+	// 		break
+	// 	}
+	// }
 
 	fmt.Println(ans)
 }
@@ -80,6 +93,14 @@ func keys(m map[int]int) []int {
 		ks = append(ks, k)
 	}
 	return ks
+}
+
+func values(m map[int]int) []int {
+	vs := []int{}
+	for _, v := range m {
+		vs = append(vs, v)
+	}
+	return vs
 }
 
 func min(a, b int) int {
