@@ -1,0 +1,24 @@
+{
+  "files.associations": {
+    "ios": "cpp",
+    "algorithm": "cpp",
+    "chrono": "cpp",
+    "__bit_reference": "cpp",
+    "__functional_base": "cpp",
+    "atomic": "cpp",
+    "bitset": "cpp",
+    "functional": "cpp",
+    "iterator": "cpp",
+    "limits": "cpp",
+    "memory": "cpp",
+    "ratio": "cpp",
+    "system_error": "cpp",
+    "tuple": "cpp",
+    "type_traits": "cpp",
+    "vector": "cpp",
+    "__split_buffer": "cpp",
+    "initializer_list": "cpp",
+    "string": "cpp",
+    "string_view": "cpp"
+  }
+}
