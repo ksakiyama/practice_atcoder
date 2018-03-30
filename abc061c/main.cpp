@@ -1,32 +1,38 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <utility>
 
 using namespace std;
 
+typedef long long ll;
+
 int main() {
-  int n, k;
+  ll n, k;
   cin >> n;
   cin >> k;
 
-  vector<int> a, b;
+  vector< pair<int, ll> > v;
   for (int i = 0; i < n; i++) {
-    int _a, _b;
-    cin >> _a, cin >> _b;
-    a.push_back(_a);
-    b.push_back(_b);
+    pair<int, ll> p;
+    cin >> p.first, cin >> p.second;
+    v.push_back(p);
   }
 
-  vector<int> stack;
+  sort(v.begin(), v.end());
+
+  ll start = 0;
   for (int i = 0; i < n; i++) {
-    for (int j = 0; j < b[i]; j++) {
-      stack.push_back(a[i]);
+    ll end = start + v[i].second;
+    if (start <= k - 1 && k - 1 < end) {
+      // cout << start << endl;
+      // cout << end << endl;
+      cout << v[i].first << endl;
+      return 0;
     }
+
+    start = end;
   }
-
-  sort(stack.begin(), stack.end());
-
-  cout << stack[k-1] << endl;
 
   return 0;
 }
