@@ -2,50 +2,36 @@
 #include <iostream>
 #include <vector>
 
-typedef unsigned long long ll;
+typedef long long ll;
 
 using namespace std;
+
+// 最大公約数
+ll gcd(ll a, ll b) {
+  if (b == 0) {
+    return a;
+  }
+  return gcd(b, a % b);
+}
+
+// 最小公倍数
+ll lcm(ll a, ll b) {
+  ll g = gcd(a, b);
+  return a / g * b; // Overflowに注意
+}
 
 int main() {
   ll n;
   cin >> n;
 
-  vector<ll> v;
+  ll ans = 1;
   for (int i = 0; i < n; i++) {
     ll t;
     cin >> t;
-    v.push_back(t);
+    ans = lcm(ans, t);
   }
 
-  // すべて同じ値だった時
-  sort(v.begin(), v.end());
-  v.erase(unique(v.begin(), v.end()), v.end());
-  if ( v.size() == 1 ) {
-    cout << v.front() << endl;
-    return 0;
-  }
-
-  // Core
-  ll maxval = v.back();
-  ll org = maxval;
-  // ll maxval = *max_element(v.begin(), v.end());
-  while (true) {
-    bool ng = false;
-    for (int i = n-1; i >= 0; i--) {
-      if (maxval % v[i] != 0) {
-        ng = true;
-        break;
-      }
-    }
-    if (!ng) {
-      break;
-    }
-    maxval += org; // 針を一周させる
-  }
-
-  cout << maxval << endl;
+  cout << ans << endl;
 
   return 0;
 }
-
-// 9,223,372,036,854,775,807
