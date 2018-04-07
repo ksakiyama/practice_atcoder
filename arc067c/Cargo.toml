@@ -1,0 +1,6 @@
+[package]
+name = "arc067c"
+version = "0.1.0"
+authors = ["ksakiyama <k.sakiyama1@gmail.com>"]
+
+[dependencies]
